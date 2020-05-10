@@ -90,5 +90,10 @@ namespace Felli
 
             return s;
         }
+
+        public void ShowPlayerSelection()
+        {
+            Console.WriteLine("Quem joga primeiro? B para brancas, P para pretas.");
+        }
     }
 }

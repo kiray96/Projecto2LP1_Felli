@@ -12,6 +12,8 @@ namespace Felli
         public IGameObject[,] grid = new IGameObject[5, 3];
         private Render r;
         private Piece playingPiece;
+        private Player p1, p2;
+
 
         /// <summary>
         /// Game manager constructor & game startup
@@ -58,13 +60,41 @@ namespace Felli
             //Spawn the middle empty square
             grid[2, 1] = new Square(PlayableType.playable, 2, 1);
         }
-        public void GameLoop()
+        private void GameLoop()
         {
+            string input = null;
 
+            while(input != "B" || input != "P")
+            {
+                Console.Clear();
+                r.ShowPlayerSelection();
+                input = Console.ReadLine().ToUpper();
+            }
+
+            while(true)
+            {
+
+            }
+            
+        }
+
+        private void SelectPlayer(string s)
+        {
+            switch(s)
+            {
+                case "B":
+                    p1 = new Player(PieceColor.white, 1);
+                    p2 = new Player(PieceColor.black, 2);
+                    break;
+                case "P":
+                    p1 = new Player(PieceColor.black, 1);
+                    p2 = new Player(PieceColor.white, 2);
+                    break;
+            }
         }
 
         private void SelectPlayingPiece(string input)
-        {
+        {          
             Piece p;
 
             foreach(IGameObject go in grid)
