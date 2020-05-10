@@ -4,19 +4,12 @@ using System.Text;
 
 namespace Felli
 {
-    class GameManager
+    public class GameManager
     {
         /// <summary>
         /// Bidimensional object array that holds the game objects 
         /// </summary>
-        public IGameObject[,] grid = new IGameObject[3, 5];
-        private bool player;
-        private Piece black1;
-        private Piece black2;
-        private Piece black3;
-        private Piece white1;
-        private Piece white2;
-        private Piece white3;
+        public IGameObject[,] grid = new IGameObject[5, 3];
         private Render r;
 
         /// <summary>
@@ -26,17 +19,19 @@ namespace Felli
         public GameManager(Render r)
         {
             this.r = r;
-            player = false;
 
             //Cycle through the bidimensional array
             for (int i = 0; i < grid.GetLength(0); ++i)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    //populate the grid with the square objects 
+                    //Populate the grid with the square objects 
                     grid[i, j] = new Square(PlayableType.nonPlayable, i, j);
                 }
             }
+
+
+
             SpawnEntities();
 
             GameLoop();
@@ -56,13 +51,14 @@ namespace Felli
             grid[1, 3] = new Piece(1, 3, 6, PieceColor.black);
 
             //Spawn the white pieces
-            grid[3, 0] = new Piece(3, 0, 4, PieceColor.white);
+            //grid[3, 0] = new Piece(3, 0, 4, PieceColor.white);
+            Console.WriteLine(grid[3, 0]);
             grid[3, 1] = new Piece(3, 1, 5, PieceColor.white);
             grid[3, 2] = new Piece(3, 2, 6, PieceColor.white);
             grid[4, 0] = new Piece(4, 0, 1, PieceColor.white);
             grid[4, 1] = new Piece(4, 1, 2, PieceColor.white);
             grid[4, 2] = new Piece(4, 2, 3, PieceColor.white);
-
+            
             //Spawn the middle empty square
             grid[2, 1] = new Square(PlayableType.playable, 2, 1);
         }

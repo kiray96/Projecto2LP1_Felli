@@ -4,22 +4,32 @@ using System.Text;
 
 namespace Felli
 {
-    class Render
+    public class Render
     {
+
         /// <summary>
         /// Draw the grid on the console
         /// </summary>
         /// <param name="grid"></param>
-        public void Draw(object[,] grid)
+        public void Draw(IGameObject[,] grid)
         {
             for (int i = 0; i < grid.GetLength(0); ++i)
             {
+                if (i % 2 != 0) Console.Write("\t");
+
                 //Iterate through the grid  
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
                     //SwitchTextColor();
 
-                    Console.Write(SetSymbol(grid[i, j]) + " ");
+                    if (i % 2 == 0)
+                    {
+                        Console.Write(SetSymbol(grid[i, j]) + "\t\t");
+                    }
+                    else
+                    {
+                        Console.Write(SetSymbol(grid[i, j]) + "\t");
+                    }
 
                     //If we found the end of the row switch color 
                     if (j == grid.GetLength(1) - 1)
@@ -31,53 +41,26 @@ namespace Felli
                 Console.WriteLine();
             }
         }
-        public string SetSymbol(object obj)
+        public string SetSymbol(IGameObject obj)
         {
             string s = null;
 
             if (obj is Square)
             {
+                Square square = obj as Square;
+
                 Console.ForegroundColor = ConsoleColor.White;
-                s = "■";
-            }
-
-            else if (obj is Black)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Black black = (Black)obj;
-                switch (black.Id)
-                {
-                    case 1:
-                        s = "1";
-                        break;
-
-                    case 2:
-                        s = "2";
-                        break;
-
-                    case 3:
-                        s = "3";
-                        break;
-
-                    case 4:
-                        s = "4";
-                        break;
-
-                    case 5:
-                        s = "5";
-                        break;
-
-                    case 6:
-                        s = "6";
-                        break;
-                }
+                s = (square.Type == PlayableType.playable) ? "." : " ";
             }
 
             else if (obj is Piece)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Piece white = (Piece)obj;
-                switch (white.Id)
+                Piece piece = obj as Piece;
+                Console.ForegroundColor = (
+                    piece.Color == PieceColor.black)
+                    ? ConsoleColor.DarkGray : ConsoleColor.White;
+
+                switch (piece.Id)
                 {
                     case 1:
                         s = "1";
@@ -103,10 +86,6 @@ namespace Felli
                         s = "6";
                         break;
                 }
-            }
-            else if (obj is Blank)
-            {
-                s = "-";
             }
 
             return s;
