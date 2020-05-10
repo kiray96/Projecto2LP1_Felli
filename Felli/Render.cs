@@ -73,10 +73,10 @@ namespace Felli
                 }
             }
 
-            else if (obj is White)
+            else if (obj is Piece)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                White white = (White)obj;
+                Piece white = (Piece)obj;
                 switch (white.Id)
                 {
                     case 1:

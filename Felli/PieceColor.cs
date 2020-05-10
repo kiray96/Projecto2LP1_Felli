@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Felli
 {
-    class Blank
+    public enum PieceColor
     {
     }
 }

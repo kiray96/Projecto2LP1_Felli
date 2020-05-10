@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Felli
 {
-    class White
+    public class Piece : IGameObject
     {
         /// <summary>
         /// Column Property.
@@ -17,21 +17,26 @@ namespace Felli
         public int Row { get; set; }
 
         /// <summary>
-        /// Sheep unic Id
+        /// Piece Id
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; private set; }
+
+        public PieceColor Color { get; private set; }
+
 
         /// <summary>
-        /// Create Sheep values
+        /// Create Piece values
         /// </summary>
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="id"></param>
-        public White(int row, int column, int id)
+
+        public Piece(int row, int column, int id, PieceColor color)
         {
             Row = row;
             Column = column;
             Id = id;
+            Color = color;
         }
     }
 }
