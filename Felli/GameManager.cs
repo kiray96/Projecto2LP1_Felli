@@ -46,19 +46,18 @@ namespace Felli
             grid[0, 0] = new Piece(0, 0, 1, PieceColor.black);
             grid[0, 1] = new Piece(0, 1, 2, PieceColor.black);
             grid[0, 2] = new Piece(0, 2, 3, PieceColor.black);
-            grid[1, 1] = new Piece(1, 1, 4, PieceColor.black);
-            grid[1, 2] = new Piece(1, 2, 5, PieceColor.black);
-            grid[1, 3] = new Piece(1, 3, 6, PieceColor.black);
+            grid[1, 0] = new Piece(1, 0, 4, PieceColor.black);
+            grid[1, 1] = new Piece(1, 1, 5, PieceColor.black);
+            grid[1, 2] = new Piece(1, 2, 6, PieceColor.black);
 
             //Spawn the white pieces
-            //grid[3, 0] = new Piece(3, 0, 4, PieceColor.white);
-            Console.WriteLine(grid[3, 0]);
+            grid[3, 0] = new Piece(3, 0, 4, PieceColor.white);
             grid[3, 1] = new Piece(3, 1, 5, PieceColor.white);
             grid[3, 2] = new Piece(3, 2, 6, PieceColor.white);
             grid[4, 0] = new Piece(4, 0, 1, PieceColor.white);
             grid[4, 1] = new Piece(4, 1, 2, PieceColor.white);
             grid[4, 2] = new Piece(4, 2, 3, PieceColor.white);
-            
+
             //Spawn the middle empty square
             grid[2, 1] = new Square(PlayableType.playable, 2, 1);
         }
