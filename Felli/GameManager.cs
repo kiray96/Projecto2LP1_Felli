@@ -11,6 +11,7 @@ namespace Felli
         /// </summary>
         public IGameObject[,] grid = new IGameObject[5, 3];
         private Render r;
+        private Piece playingPiece;
 
         /// <summary>
         /// Game manager constructor & game startup
@@ -59,6 +60,17 @@ namespace Felli
         }
         public void GameLoop()
         {
+
+        }
+
+        private void SelectPlayingPiece(string input)
+        {
+            Piece p;
+
+            foreach(IGameObject go in grid)
+            {
+                
+            }
 
         }
     }

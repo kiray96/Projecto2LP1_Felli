@@ -65,7 +65,7 @@ namespace Felli
                     break;
 
                 case Direction.North:
-                    Row++;
+                    Row--;
                     break;
 
                 case Direction.NorthWest:
@@ -87,15 +87,12 @@ namespace Felli
                     break;
 
                 case Direction.South:
-                    Row--;
+                    Row++;
                     break;
 
                 case Direction.SouthWest:
                     Column--;
                     Row++;
-                    break;
-
-                default:
                     break;
             }
         }

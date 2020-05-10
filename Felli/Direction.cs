@@ -7,7 +7,7 @@ namespace Felli
     public enum Direction
     {
         NorthEast = 9,
-        Noth = 8,
+        North = 8,
         NorthWest = 7,
         East = 6,
         West = 4,
