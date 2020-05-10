@@ -4,17 +4,14 @@ using System.Text;
 
 namespace Felli
 {
-    class Square : IGameObject
+    public class Square
     {
-        public int Row { get; set; }
-        public int Column { get; set; }
-
+        public Direction[] PossibleMovements { get; set; }
         public PlayableType Type { get; private set; }
+        public Piece Piece { get; set; }
 
-        public Square(PlayableType type, int row, int column)
+        public Square(PlayableType type)
         {
-            Row = row;
-            Column = column;
             Type = type;
         }
     }

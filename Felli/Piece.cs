@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Felli
 {
-    public class Piece : IGameObject
+    public class Piece
     {
         /// <summary>
         /// Column Property.
@@ -59,38 +59,38 @@ namespace Felli
             // Move according to direction
             switch (dir)
             {
-                case Direction.NorthEast:
+                case Direction.NE:
                     Column++;
                     Row--;
                     break;
 
-                case Direction.North:
+                case Direction.N:
                     Row--;
                     break;
 
-                case Direction.NorthWest:
+                case Direction.NW:
                     Column--;
                     Row--;
                     break;
 
-                case Direction.East:
+                case Direction.E:
                     Column++;
                     break;
 
-                case Direction.West:
+                case Direction.W:
                     Column--;
                     break;
 
-                case Direction.SouthEast:
+                case Direction.SE:
                     Column++;
                     Row++;
                     break;
 
-                case Direction.South:
+                case Direction.S:
                     Row++;
                     break;
 
-                case Direction.SouthWest:
+                case Direction.SW:
                     Column--;
                     Row++;
                     break;

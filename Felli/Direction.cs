@@ -6,14 +6,14 @@ namespace Felli
     /// </summary>
     public enum Direction
     {
-        NorthEast = 9,
-        North = 8,
-        NorthWest = 7,
-        East = 6,
-        West = 4,
-        SouthEast = 3,
-        South = 2,
-        SouthWest = 1
+        NE = 9,
+        N = 8,
+        NW = 7,
+        E = 6,
+        W = 4,
+        SE = 3,
+        S = 2,
+        SW = 1
 
     }
 }

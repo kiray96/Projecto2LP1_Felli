@@ -9,7 +9,7 @@ namespace Felli
         /// <summary>
         /// Bidimensional object array that holds the game objects 
         /// </summary>
-        public IGameObject[,] grid = new IGameObject[5, 3];
+        public Square[,] grid = new Square[5, 3];
         private Render r;
         private Piece playingPiece;
         private Player p1, p2;
@@ -29,10 +29,11 @@ namespace Felli
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
                     //Populate the grid with the square objects 
-                    grid[i, j] = new Square(PlayableType.nonPlayable, i, j);
+                    grid[i, j] = new Square(PlayableType.playable);
                 }
             }
             SpawnEntities();
+            SetPossibleMovements();
             GameLoop();
         }
 
@@ -42,45 +43,49 @@ namespace Felli
         private void SpawnEntities()
         {
             //Spawn the black pieces
-            grid[0, 0] = new Piece(0, 0, 1, PieceColor.black);
-            grid[0, 1] = new Piece(0, 1, 2, PieceColor.black);
-            grid[0, 2] = new Piece(0, 2, 3, PieceColor.black);
-            grid[1, 0] = new Piece(1, 0, 4, PieceColor.black);
-            grid[1, 1] = new Piece(1, 1, 5, PieceColor.black);
-            grid[1, 2] = new Piece(1, 2, 6, PieceColor.black);
+            grid[0, 0].Piece = new Piece(0, 0, 1, PieceColor.black);
+            grid[0, 1].Piece = new Piece(0, 1, 2, PieceColor.black);
+            grid[0, 2].Piece = new Piece(0, 2, 3, PieceColor.black);
+            grid[1, 0].Piece = new Piece(1, 0, 4, PieceColor.black);
+            grid[1, 1].Piece = new Piece(1, 1, 5, PieceColor.black);
+            grid[1, 2].Piece = new Piece(1, 2, 6, PieceColor.black);
 
             //Spawn the white pieces
-            grid[3, 0] = new Piece(3, 0, 4, PieceColor.white);
-            grid[3, 1] = new Piece(3, 1, 5, PieceColor.white);
-            grid[3, 2] = new Piece(3, 2, 6, PieceColor.white);
-            grid[4, 0] = new Piece(4, 0, 1, PieceColor.white);
-            grid[4, 1] = new Piece(4, 1, 2, PieceColor.white);
-            grid[4, 2] = new Piece(4, 2, 3, PieceColor.white);
+            grid[3, 0].Piece = new Piece(3, 0, 4, PieceColor.white);
+            grid[3, 1].Piece = new Piece(3, 1, 5, PieceColor.white);
+            grid[3, 2].Piece = new Piece(3, 2, 6, PieceColor.white);
+            grid[4, 0].Piece = new Piece(4, 0, 1, PieceColor.white);
+            grid[4, 1].Piece = new Piece(4, 1, 2, PieceColor.white);
+            grid[4, 2].Piece = new Piece(4, 2, 3, PieceColor.white);
 
-            //Spawn the middle empty square
-            grid[2, 1] = new Square(PlayableType.playable, 2, 1);
+            //Identifying non-playable positions for rendering purposes
+            grid[2, 0] = new Square(PlayableType.nonPlayable);
+            grid[2, 2] = new Square(PlayableType.nonPlayable);
+
         }
         private void GameLoop()
         {
             string input = null;
 
-            while(input != "B" || input != "P")
+            while (input != "B" && input != "P")
             {
                 Console.Clear();
                 r.ShowPlayerSelection();
                 input = Console.ReadLine().ToUpper();
             }
 
-            while(true)
+            while (true)
             {
-
+                Console.Clear();
+                r.Draw(grid);
+                Console.ReadKey();
             }
-            
+
         }
 
         private void SelectPlayer(string s)
         {
-            switch(s)
+            switch (s)
             {
                 case "B":
                     p1 = new Player(PieceColor.white, 1);
@@ -94,13 +99,46 @@ namespace Felli
         }
 
         private void SelectPlayingPiece(string input)
-        {          
+        {
             Piece p;
 
-            foreach(IGameObject go in grid)
+            foreach (Square go in grid)
             {
-                
+
             }
+
+        }
+
+        private void SetPossibleMovements()
+        {
+            grid[0, 0].PossibleMovements 
+                = new Direction[] { Direction.E, Direction.SE };
+            grid[0, 1].PossibleMovements 
+                = new Direction[] { Direction.S, Direction.E, Direction.W };
+            grid[0, 2].PossibleMovements 
+                = new Direction[] { Direction.W, Direction.SW };
+            grid[1, 0].PossibleMovements 
+                = new Direction[] { Direction.NW, Direction.E, Direction.SE };
+            grid[1, 1].PossibleMovements 
+                = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
+            grid[1, 2].PossibleMovements 
+                = new Direction[] { Direction.NE, Direction.W, Direction.SW };
+            grid[2, 1].PossibleMovements 
+                = new Direction[] { Direction.NE, Direction.N, Direction.NW,
+                    Direction.SW, Direction.S, Direction.SE };
+            grid[3, 0].PossibleMovements 
+                = new Direction[] { Direction.NE, Direction.E, Direction.SW };
+            grid[3, 1].PossibleMovements 
+                = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
+            grid[3, 2].PossibleMovements 
+                = new Direction[] { Direction.NW, Direction.W, Direction.SE };
+            grid[4, 0].PossibleMovements 
+                = new Direction[] { Direction.NE, Direction.E };
+            grid[4, 1].PossibleMovements 
+                = new Direction[] { Direction.W, Direction.E, Direction.N };
+            grid[4, 2].PossibleMovements 
+                = new Direction[] { Direction.W, Direction.NW };
+
 
         }
     }

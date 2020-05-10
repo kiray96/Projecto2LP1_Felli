@@ -11,7 +11,7 @@ namespace Felli
         /// Draw the grid on the console
         /// </summary>
         /// <param name="grid"></param>
-        public void Draw(IGameObject[,] grid)
+        public void Draw(Square[,] grid)
         {
             for (int i = 0; i < grid.GetLength(0); ++i)
             {
@@ -41,21 +41,18 @@ namespace Felli
                 Console.WriteLine("\n\n");
             }
         }
-        public string SetSymbol(IGameObject obj)
+        public string SetSymbol(Square square)
         {
             string s = null;
 
-            if (obj is Square)
+            if (square.Piece == null)
             {
-                Square square = obj as Square;
-
                 Console.ForegroundColor = ConsoleColor.White;
                 s = (square.Type == PlayableType.playable) ? "." : " ";
             }
-
-            else if (obj is Piece)
+            else
             {
-                Piece piece = obj as Piece;
+                Piece piece = square.Piece;
                 Console.ForegroundColor = (
                     piece.Color == PieceColor.black)
                     ? ConsoleColor.DarkGray : ConsoleColor.White;
