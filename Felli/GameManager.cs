@@ -29,11 +29,7 @@ namespace Felli
                     grid[i, j] = new Square(PlayableType.nonPlayable, i, j);
                 }
             }
-
-
-
             SpawnEntities();
-
             GameLoop();
         }
 

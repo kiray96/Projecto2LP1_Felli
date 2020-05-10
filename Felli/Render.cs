@@ -38,7 +38,7 @@ namespace Felli
                     }
                 }
 
-                Console.WriteLine();
+                Console.WriteLine("\n\n");
             }
         }
         public string SetSymbol(IGameObject obj)
