@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Felli
 {
-    interface IGameObject
+    public interface IGameObject
     {
+        public int Row { get; set; }
+        public int Column { get; set; }
     }
 }

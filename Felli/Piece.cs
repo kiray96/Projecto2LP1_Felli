@@ -30,7 +30,6 @@ namespace Felli
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="id"></param>
-
         public Piece(int row, int column, int id, PieceColor color)
         {
             Row = row;

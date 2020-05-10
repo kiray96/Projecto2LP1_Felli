@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Felli
 {
-    class PlayableType
+    public enum PlayableType
     {
+        playable,
+        nonPlayable
     }
 }
