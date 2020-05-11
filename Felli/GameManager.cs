@@ -68,7 +68,7 @@ namespace Felli
         {
             string input = null;
 
-            while (input != "B" && input != "P")
+            while (input != "W" && input != "B")
             {
                 Console.Clear();
                 r.ShowPlayerSelection();
@@ -124,11 +124,11 @@ namespace Felli
         {
             switch (s)
             {
-                case "B":
+                case "W":
                     p1 = new Player(PieceColor.white, 1);
                     p2 = new Player(PieceColor.black, 2);
                     break;
-                case "P":
+                case "B":
                     p1 = new Player(PieceColor.black, 1);
                     p2 = new Player(PieceColor.white, 2);
                     break;
