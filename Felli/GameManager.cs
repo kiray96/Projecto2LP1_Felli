@@ -13,6 +13,7 @@ namespace Felli
         private Render r;
         private Piece playingPiece;
         private Player p1, p2;
+        private PieceColor turnColor;
 
 
         /// <summary>
@@ -74,14 +75,50 @@ namespace Felli
                 input = Console.ReadLine().ToUpper();
             }
 
-            while (true)
+            turnColor = p1.Color;
+
+            while (input != "1" && input != "2" && input != "3" && input != "4" && input != "5" && input != "6")
             {
-                Console.Clear();
-                r.Draw(grid);
-                Console.ReadKey();
+                if (CheckWin())
+                {
+                    break;
+                }
+
+                playingPiece = null;
+                                
+                while (playingPiece == null)
+                {
+                    Console.Clear();
+                    r.Draw(grid);
+                    r.ShowSelectPieceText();
+                    input = Console.ReadLine();
+                    SelectPlayingPiece(input);
+
+                }
+
+                if (CheckMovment())
+                {
+
+                }
+                
+
             }
 
+
         }
+
+        private void ChangeTurnColor()
+        {
+            if (turnColor == PieceColor.white)
+            {
+                turnColor = PieceColor.black;
+            }
+            else
+            {
+                turnColor = PieceColor.white;
+            }
+        }
+
 
         private void SelectPlayer(string s)
         {
@@ -100,11 +137,18 @@ namespace Felli
 
         private void SelectPlayingPiece(string input)
         {
-            Piece p;
-
+            
             foreach (Square go in grid)
             {
-
+                //Defenir a peça 
+                if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == turnColor)
+                {
+                    playingPiece = go.Piece;
+                }
+                else
+                {
+                    r.InvalidPieceText();
+                }
             }
 
         }
@@ -138,8 +182,58 @@ namespace Felli
                 = new Direction[] { Direction.W, Direction.E, Direction.N };
             grid[4, 2].PossibleMovements 
                 = new Direction[] { Direction.W, Direction.NW };
+        }
 
+        private bool CheckWin()
+        {
+            if (p1.Color == turnColor)
+            {
+                if (p1.PieceCount == 0)
+                {
+                    r.Player2Win();
+                    return true;
+                }
+            }
+            else
+            {
+                if (p2.PieceCount == 0)
+                {
+                    r.Player1Win();
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        private bool CheckMovment()
+        {
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid.Length; j++)
+                {
+                    if (grid[i, j].Piece.Id == playingPiece.Id && grid[i, j].Piece.Color == playingPiece.Color)
+                    {                       
+                        while (true)
+                        {
+                            r.PlayerMove(grid[i, j].PossibleMovements);
+                            string selectedMovement = Console.ReadLine();
+                            foreach(Direction d in grid[i, j].PossibleMovements)
+                            {
+                                if (Direction.IsDefined(typeof(Direction), selectedMovement.ToUpper()))
+                                {
+                                    if (selectedMovement.ToUpper() == d.ToString())
+                                    {
+                                        playingPiece.Move (d);
+                                        return true;
+                                    }
+                                }                                
+                            }
+                            r.InvalidPieceText();
+                        }
+                    }
+                }                
+            }
+            return false;
         }
     }
 }
