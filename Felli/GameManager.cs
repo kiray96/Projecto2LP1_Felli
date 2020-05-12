@@ -64,6 +64,10 @@ namespace Felli
             grid[2, 2] = new Square(PlayableType.nonPlayable);
 
         }
+
+        /// <summary>
+        /// Accepts user input and converts it into a game action
+        /// </summary>
         private void GameLoop()
         {
             string input = null;
@@ -77,6 +81,7 @@ namespace Felli
 
             turnColor = p1.Color;
 
+            //While the input is different from the possible moves
             while (input != "1" && input != "2" && input != "3" && input != "4" && input != "5" && input != "6")
             {
                 if (CheckWin())
@@ -96,7 +101,7 @@ namespace Felli
 
                 }
 
-                if (CheckMovment())
+                if (CheckMovement())
                 {
 
                 }
@@ -205,7 +210,7 @@ namespace Felli
             return false;
         }
 
-        private bool CheckMovment()
+        private bool CheckMovement()
         {
             for (int i = 0; i < grid.Length; i++)
             {

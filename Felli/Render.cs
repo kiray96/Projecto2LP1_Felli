@@ -6,7 +6,6 @@ namespace Felli
 {
     public class Render
     {
-
         /// <summary>
         /// Draw the grid on the console
         /// </summary>
@@ -41,6 +40,12 @@ namespace Felli
                 Console.WriteLine("\n\n");
             }
         }
+
+        /// <summary>
+        /// Method that sets the symbol on each board position
+        /// </summary>
+        /// <param name="square"></param>
+        /// <returns></returns>
         public string SetSymbol(Square square)
         {
             string s = null;
@@ -88,11 +93,17 @@ namespace Felli
             return s;
         }
 
+        /// <summary>
+        /// Method that asks the player who plays first.
+        /// </summary>
         public void ShowPlayerSelection()
         {
             Console.WriteLine("Who will play first?? W for white, B for black.");
         }
 
+        /// <summary>
+        /// Method that asks the player to select a piece to play
+        /// </summary>
         public void ShowSelectPieceText()
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -101,6 +112,9 @@ namespace Felli
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Method that informs the player their choice is invalid
+        /// </summary>
         public void InvalidPieceText()
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -109,6 +123,9 @@ namespace Felli
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Method that informs the players that Player 2 won 
+        /// </summary>
         public void Player2Win()
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -117,6 +134,9 @@ namespace Felli
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Method that informs the players that Player 1 won 
+        /// </summary>
         public void Player1Win()
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -125,6 +145,10 @@ namespace Felli
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Method that shows the player the possible movements
+        /// </summary>
+        /// <param name="possibleMoves"></param>
         public void PlayerMove(Direction[] possibleMoves)
         {
             Console.WriteLine("Possible movements: ");
@@ -135,8 +159,6 @@ namespace Felli
                 Console.WriteLine(d.ToString());
                 Console.WriteLine();
             }
-
-            
         }
     }
 }
