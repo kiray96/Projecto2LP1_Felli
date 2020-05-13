@@ -33,6 +33,7 @@ namespace Felli
 
         public PieceColor Color { get; private set; }
 
+        public bool IsBlocked { get; set; }
 
         /// <summary>
         /// Create Piece values
@@ -46,6 +47,7 @@ namespace Felli
             Column = column;
             Id = id;
             Color = color;
+            
         }
 
         /// <summary>

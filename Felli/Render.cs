@@ -149,7 +149,7 @@ namespace Felli
         /// Method that shows the player the possible movements
         /// </summary>
         /// <param name="possibleMoves"></param>
-        public void ShowPossibleMovements(Direction[] possibleMoves)
+        public void ShowPossibleDirections(Direction[] possibleMoves)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
@@ -161,7 +161,6 @@ namespace Felli
             Console.WriteLine("\n________");
             Console.WriteLine();
             Console.Write("Input: ");
-            Console.ReadKey();
         }
 
         public void ShowInputMovements()

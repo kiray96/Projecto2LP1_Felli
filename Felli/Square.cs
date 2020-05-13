@@ -14,5 +14,16 @@ namespace Felli
         {
             Type = type;
         }
+        public bool HasPiece()
+        {
+            if (Piece == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

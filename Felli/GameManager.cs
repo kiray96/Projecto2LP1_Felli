@@ -93,6 +93,8 @@ namespace Felli
             //Infinite loop
             while (true)
             {
+                UpdateBlockedPieces();
+
                 while (playingPiece == null)
                 {
                     input = null;
@@ -115,14 +117,14 @@ namespace Felli
                 }
 
                 input = null;
- 
+
                 while (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9")
                 {
                     Console.Clear();
                     r.Draw(grid);
                     r.ShowInputMovements();
-                    r.ShowPossibleMovements(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
-
+                    r.ShowPossibleDirections(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
+                    input = Console.ReadLine();
                 }
 
                 if (CheckMovement())
@@ -186,7 +188,7 @@ namespace Felli
                 if (go.Piece != null)
                 {
                     //Definir a peça 
-                    if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == turnColor)
+                    if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == turnColor && go.Piece.IsBlocked == false)
                     {
                         p = go.Piece;
                     }
@@ -198,32 +200,32 @@ namespace Felli
         private void SetPossibleMovements()
         {
             grid[0, 0].PossibleMovements
-                = new Direction[] { Direction.E, Direction.SE };
+                = new Direction[] { Direction.E, Direction.S };
             grid[0, 1].PossibleMovements
                 = new Direction[] { Direction.S, Direction.E, Direction.W };
             grid[0, 2].PossibleMovements
-                = new Direction[] { Direction.W, Direction.SW };
+                = new Direction[] { Direction.W, Direction.S };
             grid[1, 0].PossibleMovements
-                = new Direction[] { Direction.NW, Direction.E, Direction.SE };
+                = new Direction[] { Direction.N, Direction.E, };
             grid[1, 1].PossibleMovements
                 = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
             grid[1, 2].PossibleMovements
-                = new Direction[] { Direction.NE, Direction.W, Direction.SW };
+                = new Direction[] { Direction.N, Direction.W, Direction.SW };
             grid[2, 1].PossibleMovements
                 = new Direction[] { Direction.NE, Direction.N, Direction.NW,
                     Direction.SW, Direction.S, Direction.SE };
             grid[3, 0].PossibleMovements
-                = new Direction[] { Direction.NE, Direction.E, Direction.SW };
+                = new Direction[] { Direction.NE, Direction.E, Direction.S };
             grid[3, 1].PossibleMovements
                 = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
             grid[3, 2].PossibleMovements
-                = new Direction[] { Direction.NW, Direction.W, Direction.SE };
+                = new Direction[] { Direction.NW, Direction.W, Direction.S };
             grid[4, 0].PossibleMovements
-                = new Direction[] { Direction.NE, Direction.E };
+                = new Direction[] { Direction.N, Direction.E };
             grid[4, 1].PossibleMovements
                 = new Direction[] { Direction.W, Direction.E, Direction.N };
             grid[4, 2].PossibleMovements
-                = new Direction[] { Direction.W, Direction.NW };
+                = new Direction[] { Direction.W, Direction.N };
         }
 
         private bool CheckWin()
@@ -249,15 +251,15 @@ namespace Felli
 
         private bool CheckMovement()
         {
-            for (int i = 0; i < grid.Length; i++)
+            for (int i = 0; i < grid.GetLength(0); i++)
             {
-                for (int j = 0; j < grid.Length; j++)
+                for (int j = 0; j < grid.GetLength(1); j++)
                 {
                     if (grid[i, j].Piece.Id == playingPiece.Id && grid[i, j].Piece.Color == playingPiece.Color)
                     {
                         while (true)
                         {
-                            r.ShowPossibleMovements(grid[i, j].PossibleMovements);
+                            r.ShowPossibleDirections(grid[i, j].PossibleMovements);
                             string selectedMovement = Console.ReadLine();
                             foreach (Direction d in grid[i, j].PossibleMovements)
                             {
@@ -277,6 +279,69 @@ namespace Felli
             }
             return false;
         }
+
+        private void UpdateBlockedPieces()
+        {
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    //Se existe uma peça, verifica se está bloqueada
+                    if (grid[i, j].Piece != null)
+                    {
+                        grid[i, j].Piece.IsBlocked = CheckPieceBlock(grid[i, j], grid[i, j].Piece);
+                    }
+                }
+            }
+        }
+
+        private bool CheckPieceBlock(Square sq, Piece p)
+        {
+            bool value = false;
+            Console.WriteLine(p.Color + p.Id);
+            Console.ReadKey();
+
+            foreach (Direction d in sq.PossibleMovements)
+            {
+                switch (d)
+                {
+                    case Direction.E:
+                        value = (grid[p.Row, p.Column + 1].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.N:
+                        value = (grid[p.Row - 1, p.Column].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.NE:
+                        value = (grid[p.Row - 1, p.Column + 1].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.NW:
+                        value = (grid[p.Row - 1, p.Column - 1].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.S:
+                        value = (grid[p.Row + 1, p.Column].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.SE:
+                        value = (grid[p.Row + 1, p.Column + 1].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.SW:
+                        value = (grid[p.Row + 1, p.Column - 1].HasPiece());
+                        if (value == false) return false;
+                        break;
+                    case Direction.W:
+                        value = (grid[p.Row, p.Column - 1].HasPiece());
+                        if (value == false) return false;
+                        break;
+                }
+            }
+            return value;
+        }
     }
+
 }
 
