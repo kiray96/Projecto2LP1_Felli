@@ -13,8 +13,7 @@ namespace Felli
 
         private Render r;
         private Piece playingPiece;
-        private Player p1, p2;
-        private PieceColor turnColor;
+        private Player p1, p2, currentPlayer;
 
 
         /// <summary>
@@ -79,8 +78,6 @@ namespace Felli
             }
 
             CreatePlayers(input);
-
-            turnColor = p1.Color;
         }
 
         /// <summary>
@@ -89,11 +86,12 @@ namespace Felli
         private void GameLoop()
         {
             string input = null;
+            currentPlayer = p1;
 
             //Infinite loop
             while (true)
             {
-                UpdateBlockedPieces();
+                //UpdateBlockedPieces();
 
                 while (playingPiece == null)
                 {
@@ -103,7 +101,7 @@ namespace Felli
                     {
                         Console.Clear();
                         r.Draw(grid);
-                        r.ShowSelectPieceText();
+                        r.ShowSelectPieceText(currentPlayer.Color, currentPlayer.Id);
                         input = Console.ReadLine();
                     }
 
@@ -118,19 +116,54 @@ namespace Felli
 
                 input = null;
 
-                while (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9")
+                //A tuple with a boolean that decides if the piece moves and an integer with the quantity of steps it can move (row and col) and a bool for erase enemy.
+                (bool, int, int, bool) canMove = (false, 0, 0, false);
+
+                while (canMove.Item1 == false)
                 {
-                    Console.Clear();
-                    r.Draw(grid);
-                    r.ShowInputMovements();
-                    r.ShowPossibleDirections(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
-                    input = Console.ReadLine();
+                    while (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9")
+                    {
+                        Console.Clear();
+                        r.Draw(grid);
+                        r.ShowInputMovements();
+                        r.ShowPossibleDirections(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
+                        input = Console.ReadLine();
+
+                        canMove = CheckMovement(input);
+
+                        if (!canMove.Item1)
+                        {
+                            r.InvalidMovementText();
+                            input = null;
+                            Console.ReadKey();
+                        }
+
+                    }
+
                 }
 
-                if (CheckMovement())
+                if (canMove.Item4)
                 {
-
+                    playingPiece.Move((Direction)Convert.ToInt32(input));
+                    grid[playingPiece.Row, playingPiece.Column].Piece = null;
+                    playingPiece.ResetMovement();
+                    UpdatePieces();
                 }
+                playingPiece.Row = canMove.Item2;
+                playingPiece.Column = canMove.Item3;
+                //If erasing enemy is set to true
+
+                grid[playingPiece.Row, playingPiece.Column].Piece = playingPiece;
+                grid[playingPiece.PreviousRow, playingPiece.PreviousColumn].Piece = null;
+
+
+
+                //Fazer Check win
+
+                ChangeTurn();
+                input = null;
+                playingPiece = null;
+
             }
         }
 
@@ -153,13 +186,13 @@ namespace Felli
 
         private void ChangeTurn()
         {
-            if (turnColor == PieceColor.white)
+            if (currentPlayer == p1)
             {
-                turnColor = PieceColor.black;
+                currentPlayer = p2;
             }
             else
             {
-                turnColor = PieceColor.white;
+                currentPlayer = p1;
             }
         }
 
@@ -188,7 +221,7 @@ namespace Felli
                 if (go.Piece != null)
                 {
                     //Definir a peça 
-                    if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == turnColor && go.Piece.IsBlocked == false)
+                    if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == currentPlayer.Color && go.Piece.IsBlocked == false)
                     {
                         p = go.Piece;
                     }
@@ -230,7 +263,7 @@ namespace Felli
 
         private bool CheckWin()
         {
-            if (p1.Color == turnColor)
+            if (p1.Color == currentPlayer.Color)
             {
                 if (p1.PieceCount == 0)
                 {
@@ -249,7 +282,87 @@ namespace Felli
             return false;
         }
 
-        private bool CheckMovement()
+        /// <summary>
+        /// Movement Method
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private (bool, int, int, bool) CheckMovement(string input)
+        {
+            bool value = false;
+            int row = 0;
+            int column = 0;
+            int newRow = 0;
+            int newColumn = 0;
+            bool eraseEnemy = false;
+
+            if (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9") return (false, 0, 0, false);
+            else
+            {
+                Direction dir = (Direction)Convert.ToInt32(input);
+
+                if (grid[playingPiece.Row, playingPiece.Column].HasDirection(dir))
+                {
+                    playingPiece.Move(dir);
+                    Square targetSq = grid[playingPiece.Row, playingPiece.Column];
+                    row = playingPiece.PreviousRow;
+                    column = playingPiece.PreviousColumn;
+                    newRow = playingPiece.Row;
+                    newColumn = playingPiece.Column;
+
+                    // If the target square doesn't have a piece
+                    if (!targetSq.HasPiece())
+                    {
+                        value = true;
+                    }
+                    else
+                    {
+                        if (playingPiece.Color == targetSq.Piece.Color)
+                        {
+                            value = false;
+                        }
+                        else
+                        {
+                            if (targetSq.HasDirection(dir))
+                            {
+                                playingPiece.Move(dir);
+                                newRow = playingPiece.Row;
+                                newColumn = playingPiece.Column;
+                                eraseEnemy = true;
+
+                                if (grid[playingPiece.Row, playingPiece.Column].HasPiece()) value = false;
+                                else value = true;
+                            }
+                            else
+                            {
+                                if (targetSq.HasSimilarDirection(dir))
+                                {
+                                    Direction d = targetSq.GetSimilarDirection(dir);
+                                    playingPiece.Move(d);
+                                    newRow = playingPiece.Row;
+                                    newColumn = playingPiece.Column;
+                                    eraseEnemy = true;
+
+                                    if (grid[playingPiece.Row, playingPiece.Column].HasPiece()) value = false;
+                                    else value = true;
+                                }
+                                else value = false;
+                            }
+                        }
+                    }
+
+                    playingPiece.Row = row;
+                    playingPiece.Column = column;
+                    playingPiece.PreviousRow = row;
+                    playingPiece.PreviousColumn = column;
+                }
+                else value = false;
+                return (value, newRow, newColumn, eraseEnemy);
+            }
+        }
+
+
+        /*private bool CheckMovement()
         {
             for (int i = 0; i < grid.GetLength(0); i++)
             {
@@ -279,6 +392,7 @@ namespace Felli
             }
             return false;
         }
+        */
 
         private void UpdateBlockedPieces()
         {
@@ -298,8 +412,6 @@ namespace Felli
         private bool CheckPieceBlock(Square sq, Piece p)
         {
             bool value = false;
-            Console.WriteLine(p.Color + p.Id);
-            Console.ReadKey();
 
             foreach (Direction d in sq.PossibleMovements)
             {
@@ -340,6 +452,11 @@ namespace Felli
                 }
             }
             return value;
+        }
+        private void UpdatePieces()
+        {
+            if (currentPlayer == p1) p2.PieceCount--;
+            else p1.PieceCount--;
         }
     }
 

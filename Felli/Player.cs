@@ -13,17 +13,12 @@ namespace Felli
         /// </summary>
         public int Id { get; private set; }
 
-        public int PieceCount { get; private set; }
+        public int PieceCount { get; set; }
 
         public Player(PieceColor color, int id)
         {
             Color = color;
             Id = id;
-        }
-
-        public void ReducePieceCount()
-        {
-            PieceCount--;
         }
     }
 }

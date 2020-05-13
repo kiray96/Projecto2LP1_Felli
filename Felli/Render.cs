@@ -104,10 +104,11 @@ namespace Felli
         /// <summary>
         /// Method that asks the player to select a piece to play
         /// </summary>
-        public void ShowSelectPieceText()
+        public void ShowSelectPieceText(PieceColor color, int id)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
+            Console.WriteLine($"Player {id}, with color {color.ToString()} is playing.");
             Console.WriteLine("Choose the piece you want to play from 1-6.");
             Console.WriteLine();
         }
@@ -120,6 +121,14 @@ namespace Felli
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
             Console.WriteLine("This Choice is invalid. Press any key to continue...");
+            Console.WriteLine();
+        }
+
+        public void InvalidMovementText()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+            Console.WriteLine("This movement is invalid. Press any key to continue...");
             Console.WriteLine();
         }
 

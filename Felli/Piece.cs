@@ -19,12 +19,12 @@ namespace Felli
         /// <summary>
         /// Previous column position
         /// </summary>
-        public int PreviousColumn { get; private set; }
+        public int PreviousColumn { get; set; }
 
         /// <summary>
         /// Previous row position
         /// </summary>
-        public int PreviousRow { get; private set; }
+        public int PreviousRow { get; set; }
 
         /// <summary>
         /// Piece Id
@@ -100,7 +100,7 @@ namespace Felli
         }
 
         /// <summary>
-        /// Undo the last move made (sheep)
+        /// Undo the last move made
         /// </summary>
         public void ResetMovement()
         {
