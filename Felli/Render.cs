@@ -119,7 +119,7 @@ namespace Felli
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
-            Console.WriteLine("This Choice is invalid.");
+            Console.WriteLine("This Choice is invalid. Press any key to continue...");
             Console.WriteLine();
         }
 
@@ -149,16 +149,39 @@ namespace Felli
         /// Method that shows the player the possible movements
         /// </summary>
         /// <param name="possibleMoves"></param>
-        public void PlayerMove(Direction[] possibleMoves)
+        public void ShowPossibleMovements(Direction[] possibleMoves)
         {
-            Console.WriteLine("Possible movements: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+            Console.WriteLine("Possible movements:");
             foreach (Direction d in possibleMoves)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine();
-                Console.WriteLine(d.ToString());
-                Console.WriteLine();
+                Console.Write(d + ", ");
             }
+            Console.WriteLine("\n________");
+            Console.WriteLine();
+            Console.Write("Input: ");
+            Console.ReadKey();
         }
+
+        public void ShowInputMovements()
+        {
+            Console.WriteLine("");
+            Console.WriteLine(@"  7(NW)   8(N)   9(NE)");
+            Console.WriteLine(@"    \      |      /");
+            Console.WriteLine(@"     \     |     /");
+            Console.WriteLine(@"      \    |    /");
+            Console.WriteLine(@"4(W)-------------- 6(E)");
+            Console.WriteLine(@"      /    |    \");
+            Console.WriteLine(@"     /     |     \");
+            Console.WriteLine(@"    /      |      \");
+            Console.WriteLine(@"  1(SW)   2(S)   3(SE)");
+            Console.WriteLine();
+            Console.WriteLine("Choose an available number to move in the respective direction!");
+            Console.WriteLine();
+            Console.WriteLine("________");
+        }
+
+
     }
 }

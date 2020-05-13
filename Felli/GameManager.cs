@@ -10,6 +10,7 @@ namespace Felli
         /// Bidimensional object array that holds the game objects 
         /// </summary>
         public Square[,] grid = new Square[5, 3];
+
         private Render r;
         private Piece playingPiece;
         private Player p1, p2;
@@ -35,6 +36,7 @@ namespace Felli
             }
             SpawnEntities();
             SetPossibleMovements();
+            SetPlayers();
             GameLoop();
         }
 
@@ -65,10 +67,7 @@ namespace Felli
 
         }
 
-        /// <summary>
-        /// Accepts user input and converts it into a game action
-        /// </summary>
-        private void GameLoop()
+        private void SetPlayers()
         {
             string input = null;
 
@@ -79,25 +78,50 @@ namespace Felli
                 input = Console.ReadLine().ToUpper();
             }
 
-            turnColor = p1.Color;
+            CreatePlayers(input);
 
-            //While the input is different from the possible moves
-            while (input != "1" && input != "2" && input != "3" && input != "4" && input != "5" && input != "6")
+            turnColor = p1.Color;
+        }
+
+        /// <summary>
+        /// Accepts user input and converts it into a game action
+        /// </summary>
+        private void GameLoop()
+        {
+            string input = null;
+
+            //Infinite loop
+            while (true)
             {
-                if (CheckWin())
+                while (playingPiece == null)
                 {
-                    break;
+                    input = null;
+                    //While the input is different from the possible moves
+                    while (input != "1" && input != "2" && input != "3" && input != "4" && input != "5" && input != "6")
+                    {
+                        Console.Clear();
+                        r.Draw(grid);
+                        r.ShowSelectPieceText();
+                        input = Console.ReadLine();
+                    }
+
+                    playingPiece = SelectPlayingPiece(input);
+
+                    if (playingPiece == null)
+                    {
+                        r.InvalidPieceText();
+                        Console.ReadKey();
+                    }
                 }
 
-                playingPiece = null;
-                                
-                while (playingPiece == null)
+                input = null;
+ 
+                while (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9")
                 {
                     Console.Clear();
                     r.Draw(grid);
-                    r.ShowSelectPieceText();
-                    input = Console.ReadLine();
-                    SelectPlayingPiece(input);
+                    r.ShowInputMovements();
+                    r.ShowPossibleMovements(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
 
                 }
 
@@ -105,14 +129,27 @@ namespace Felli
                 {
 
                 }
-                
-
             }
+        }
 
+        private void CreatePlayers(string s)
+        {
+            switch (s)
+            {
+                case "W":
+                    p1 = new Player(PieceColor.white, 1);
+                    p2 = new Player(PieceColor.black, 2);
+                    break;
+
+                case "B":
+                    p1 = new Player(PieceColor.black, 1);
+                    p2 = new Player(PieceColor.white, 2);
+                    break;
+            }
 
         }
 
-        private void ChangeTurnColor()
+        private void ChangeTurn()
         {
             if (turnColor == PieceColor.white)
             {
@@ -140,52 +177,52 @@ namespace Felli
             }
         }
 
-        private void SelectPlayingPiece(string input)
+        private Piece SelectPlayingPiece(string input)
         {
-            
+            Piece p = null;
+
             foreach (Square go in grid)
             {
-                //Defenir a peça 
-                if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == turnColor)
+                if (go.Piece != null)
                 {
-                    playingPiece = go.Piece;
-                }
-                else
-                {
-                    r.InvalidPieceText();
+                    //Definir a peça 
+                    if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == turnColor)
+                    {
+                        p = go.Piece;
+                    }
                 }
             }
-
+            return p;
         }
 
         private void SetPossibleMovements()
         {
-            grid[0, 0].PossibleMovements 
+            grid[0, 0].PossibleMovements
                 = new Direction[] { Direction.E, Direction.SE };
-            grid[0, 1].PossibleMovements 
+            grid[0, 1].PossibleMovements
                 = new Direction[] { Direction.S, Direction.E, Direction.W };
-            grid[0, 2].PossibleMovements 
+            grid[0, 2].PossibleMovements
                 = new Direction[] { Direction.W, Direction.SW };
-            grid[1, 0].PossibleMovements 
+            grid[1, 0].PossibleMovements
                 = new Direction[] { Direction.NW, Direction.E, Direction.SE };
-            grid[1, 1].PossibleMovements 
+            grid[1, 1].PossibleMovements
                 = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
-            grid[1, 2].PossibleMovements 
+            grid[1, 2].PossibleMovements
                 = new Direction[] { Direction.NE, Direction.W, Direction.SW };
-            grid[2, 1].PossibleMovements 
+            grid[2, 1].PossibleMovements
                 = new Direction[] { Direction.NE, Direction.N, Direction.NW,
                     Direction.SW, Direction.S, Direction.SE };
-            grid[3, 0].PossibleMovements 
+            grid[3, 0].PossibleMovements
                 = new Direction[] { Direction.NE, Direction.E, Direction.SW };
-            grid[3, 1].PossibleMovements 
+            grid[3, 1].PossibleMovements
                 = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
-            grid[3, 2].PossibleMovements 
+            grid[3, 2].PossibleMovements
                 = new Direction[] { Direction.NW, Direction.W, Direction.SE };
-            grid[4, 0].PossibleMovements 
+            grid[4, 0].PossibleMovements
                 = new Direction[] { Direction.NE, Direction.E };
-            grid[4, 1].PossibleMovements 
+            grid[4, 1].PossibleMovements
                 = new Direction[] { Direction.W, Direction.E, Direction.N };
-            grid[4, 2].PossibleMovements 
+            grid[4, 2].PossibleMovements
                 = new Direction[] { Direction.W, Direction.NW };
         }
 
@@ -217,26 +254,26 @@ namespace Felli
                 for (int j = 0; j < grid.Length; j++)
                 {
                     if (grid[i, j].Piece.Id == playingPiece.Id && grid[i, j].Piece.Color == playingPiece.Color)
-                    {                       
+                    {
                         while (true)
                         {
-                            r.PlayerMove(grid[i, j].PossibleMovements);
+                            r.ShowPossibleMovements(grid[i, j].PossibleMovements);
                             string selectedMovement = Console.ReadLine();
-                            foreach(Direction d in grid[i, j].PossibleMovements)
+                            foreach (Direction d in grid[i, j].PossibleMovements)
                             {
                                 if (Direction.IsDefined(typeof(Direction), selectedMovement.ToUpper()))
                                 {
                                     if (selectedMovement.ToUpper() == d.ToString())
                                     {
-                                        playingPiece.Move (d);
+                                        playingPiece.Move(d);
                                         return true;
                                     }
-                                }                                
+                                }
                             }
                             r.InvalidPieceText();
                         }
                     }
-                }                
+                }
             }
             return false;
         }

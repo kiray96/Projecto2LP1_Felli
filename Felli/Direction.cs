@@ -1,6 +1,7 @@
 ﻿
 namespace Felli
 {
+    
     /// <summary>
     /// Enum Direction. Enumerates all possible directions.
     /// </summary>
