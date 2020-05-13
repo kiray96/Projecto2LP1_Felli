@@ -91,7 +91,7 @@ namespace Felli
             //Infinite loop
             while (true)
             {
-                //UpdateBlockedPieces();
+                UpdateBlockedPieces();
 
                 while (playingPiece == null)
                 {
@@ -360,40 +360,6 @@ namespace Felli
                 return (value, newRow, newColumn, eraseEnemy);
             }
         }
-
-
-        /*private bool CheckMovement()
-        {
-            for (int i = 0; i < grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < grid.GetLength(1); j++)
-                {
-                    if (grid[i, j].Piece.Id == playingPiece.Id && grid[i, j].Piece.Color == playingPiece.Color)
-                    {
-                        while (true)
-                        {
-                            r.ShowPossibleDirections(grid[i, j].PossibleMovements);
-                            string selectedMovement = Console.ReadLine();
-                            foreach (Direction d in grid[i, j].PossibleMovements)
-                            {
-                                if (Direction.IsDefined(typeof(Direction), selectedMovement.ToUpper()))
-                                {
-                                    if (selectedMovement.ToUpper() == d.ToString())
-                                    {
-                                        playingPiece.Move(d);
-                                        return true;
-                                    }
-                                }
-                            }
-                            r.InvalidPieceText();
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-        */
-
         private void UpdateBlockedPieces()
         {
             for (int i = 0; i < grid.GetLength(0); i++)
@@ -415,41 +381,8 @@ namespace Felli
 
             foreach (Direction d in sq.PossibleMovements)
             {
-                switch (d)
-                {
-                    case Direction.E:
-                        value = (grid[p.Row, p.Column + 1].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.N:
-                        value = (grid[p.Row - 1, p.Column].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.NE:
-                        value = (grid[p.Row - 1, p.Column + 1].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.NW:
-                        value = (grid[p.Row - 1, p.Column - 1].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.S:
-                        value = (grid[p.Row + 1, p.Column].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.SE:
-                        value = (grid[p.Row + 1, p.Column + 1].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.SW:
-                        value = (grid[p.Row + 1, p.Column - 1].HasPiece());
-                        if (value == false) return false;
-                        break;
-                    case Direction.W:
-                        value = (grid[p.Row, p.Column - 1].HasPiece());
-                        if (value == false) return false;
-                        break;
-                }
+                value = CheckBlockedPositions(p, d);
+                if (value == false) break;
             }
             return value;
         }
@@ -457,6 +390,43 @@ namespace Felli
         {
             if (currentPlayer == p1) p2.PieceCount--;
             else p1.PieceCount--;
+        }
+
+        private bool CheckBlockedPositions(Piece p, Direction d)
+        {
+            int row = p.Row;
+            int column = p.Column;
+            int previousRow = p.PreviousRow;
+            int previousColumn = p.PreviousColumn;
+            bool value = false;
+            
+            p.Move(d);
+
+            if (grid[p.Row, p.Column].HasPiece())
+            {
+                if (grid[p.Row, p.Column].Piece.Color != p.Color)
+                {
+                    if ((grid[p.Row, p.Column].HasDirection(d)))
+                    {
+                        p.Move(d);
+                        if (grid[p.Row, p.Column].HasPiece()) value = true;
+                    }
+                    else if ((grid[p.Row, p.Column].HasSimilarDirection(d)))
+                    {
+                        p.Move((grid[p.Row, p.Column].GetSimilarDirection(d)));
+                        if (grid[p.Row, p.Column].HasPiece()) value = true;
+                    }
+                }
+                else
+                {
+                    value = true;
+                }
+            }
+            p.Row = row;
+            p.Column = column;
+            p.PreviousRow = previousRow;
+            p.PreviousColumn = previousColumn;
+            return value;
         }
     }
 

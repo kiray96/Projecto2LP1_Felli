@@ -42,11 +42,13 @@ namespace Felli
         /// <returns></returns>
         public Direction GetSimilarDirection(Direction dir)
         {
-            string s = null;
+            string s = "";
             Direction d = default;
 
             if (dir.ToString().Contains("N")) s = "N";
             else if (dir.ToString().Contains("S")) s = "S";
+
+
 
             foreach (Direction direction in PossibleMovements)
             {
@@ -67,10 +69,11 @@ namespace Felli
         /// <returns></returns>
         public bool HasSimilarDirection(Direction dir)
         {
-            string s = null;
+            string s = "";
 
             if (dir.ToString().Contains("N")) s = "N";
             else if (dir.ToString().Contains("S")) s = "S";
+
 
             foreach (Direction d in PossibleMovements)
             {
