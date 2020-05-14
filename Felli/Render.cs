@@ -14,18 +14,72 @@ namespace Felli
         {
             for (int i = 0; i < grid.GetLength(0); ++i)
             {
-
-
                 //Iterate through the grid  
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-
-                 Console.Write(SetSymbol(grid[i, j]) + "\t");
-
+                    Console.Write(SetSymbol(grid[i, j]) + "\t");
                 }
 
                 Console.WriteLine("\n\n");
             }
+
+            DrawBoardLines();
+        }
+
+        /// <summary>
+        /// Class that sets cursor at a certain position and writes on it
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void WriteAt(string s, int x, int y)
+        {
+            int origRow = Console.CursorTop;
+            int origCol = Console.CursorLeft;
+
+            Console.SetCursorPosition(y, x);
+            Console.Write(s);
+            Console.SetCursorPosition(origCol, origRow);
+
+        }
+        public void DrawBoardLines()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            // First Line
+            WriteAt(" ------------- ", 0, 1);
+            WriteAt(" ------------- ", 0, 17);
+
+            //Second Line
+            WriteAt(@"-            |             -", 1, 3);
+            WriteAt(@"-         |          -", 2, 6);
+
+            //Third Line
+            WriteAt(@"-----", 3, 10);
+            WriteAt(@"-----", 3, 18);
+
+            //Fourth Line
+            WriteAt(@"-     |     -", 4, 10);
+            WriteAt(@"-   |   -", 5, 12);
+
+            //Fifth Line
+            WriteAt(@"-   |   -", 7, 12);
+            WriteAt(@"-     |     -", 8, 10);
+            
+            //Sixth Line
+            WriteAt(@"-----", 9, 18);
+            WriteAt(@"-----", 9, 10);
+
+            //Seventh Line
+            WriteAt(@"-         |          -", 10, 6);
+            WriteAt(@"-            |             -", 11, 3);
+
+            //Eigth Line
+            WriteAt(" ------------- ", 12, 17);
+            WriteAt(" ------------- ", 12, 1);
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+
         }
 
         /// <summary>
@@ -40,7 +94,7 @@ namespace Felli
             if (square.Piece == null)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                s = (square.Type == PlayableType.playable) ? "." : " ";
+                s = (square.Type == PlayableType.playable) ? "\u00B7" : " ";
             }
             else
             {
