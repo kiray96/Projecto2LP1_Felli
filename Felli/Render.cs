@@ -14,27 +14,14 @@ namespace Felli
         {
             for (int i = 0; i < grid.GetLength(0); ++i)
             {
-                if (i % 2 != 0) Console.Write("\t");
+
 
                 //Iterate through the grid  
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    //SwitchTextColor();
 
-                    if (i % 2 == 0)
-                    {
-                        Console.Write(SetSymbol(grid[i, j]) + "\t\t");
-                    }
-                    else
-                    {
-                        Console.Write(SetSymbol(grid[i, j]) + "\t");
-                    }
+                 Console.Write(SetSymbol(grid[i, j]) + "\t");
 
-                    //If we found the end of the row switch color 
-                    if (j == grid.GetLength(1) - 1)
-                    {
-                        //SwitchTextColor();
-                    }
                 }
 
                 Console.WriteLine("\n\n");

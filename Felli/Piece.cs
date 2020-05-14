@@ -76,11 +76,13 @@ namespace Felli
                     break;
 
                 case Direction.E:
-                    Column++;
+                    if (Row == 0 || Row == 4) Column += 2;
+                    else Column++;
                     break;
 
                 case Direction.W:
-                    Column--;
+                    if (Row == 0 || Row == 4) Column -= 2;
+                    else Column--;
                     break;
 
                 case Direction.SE:

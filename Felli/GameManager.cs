@@ -9,7 +9,7 @@ namespace Felli
         /// <summary>
         /// Bidimensional object array that holds the game objects 
         /// </summary>
-        public Square[,] grid = new Square[5, 3];
+        public Square[,] grid = new Square[5, 5];
 
         private Render r;
         private Piece playingPiece;
@@ -46,23 +46,33 @@ namespace Felli
         {
             //Spawn the black pieces
             grid[0, 0].Piece = new Piece(0, 0, 1, PieceColor.black);
-            grid[0, 1].Piece = new Piece(0, 1, 2, PieceColor.black);
-            grid[0, 2].Piece = new Piece(0, 2, 3, PieceColor.black);
-            grid[1, 0].Piece = new Piece(1, 0, 4, PieceColor.black);
-            grid[1, 1].Piece = new Piece(1, 1, 5, PieceColor.black);
-            grid[1, 2].Piece = new Piece(1, 2, 6, PieceColor.black);
+            grid[0, 2].Piece = new Piece(0, 2, 2, PieceColor.black);
+            grid[0, 4].Piece = new Piece(0, 4, 3, PieceColor.black);
+            grid[1, 1].Piece = new Piece(1, 1, 4, PieceColor.black);
+            grid[1, 2].Piece = new Piece(1, 2, 5, PieceColor.black);
+            grid[1, 3].Piece = new Piece(1, 3, 6, PieceColor.black);
 
             //Spawn the white pieces
-            grid[3, 0].Piece = new Piece(3, 0, 4, PieceColor.white);
-            grid[3, 1].Piece = new Piece(3, 1, 5, PieceColor.white);
-            grid[3, 2].Piece = new Piece(3, 2, 6, PieceColor.white);
+            grid[3, 1].Piece = new Piece(3, 1, 4, PieceColor.white);
+            grid[3, 2].Piece = new Piece(3, 2, 5, PieceColor.white);
+            grid[3, 3].Piece = new Piece(3, 3, 6, PieceColor.white);
             grid[4, 0].Piece = new Piece(4, 0, 1, PieceColor.white);
-            grid[4, 1].Piece = new Piece(4, 1, 2, PieceColor.white);
-            grid[4, 2].Piece = new Piece(4, 2, 3, PieceColor.white);
+            grid[4, 2].Piece = new Piece(4, 2, 2, PieceColor.white);
+            grid[4, 4].Piece = new Piece(4, 4, 3, PieceColor.white);
 
             //Identifying non-playable positions for rendering purposes
+            grid[0, 1] = new Square(PlayableType.nonPlayable);
+            grid[0, 3] = new Square(PlayableType.nonPlayable);
+            grid[1, 0] = new Square(PlayableType.nonPlayable);
+            grid[1, 4] = new Square(PlayableType.nonPlayable);
             grid[2, 0] = new Square(PlayableType.nonPlayable);
-            grid[2, 2] = new Square(PlayableType.nonPlayable);
+            grid[2, 1] = new Square(PlayableType.nonPlayable);
+            grid[2, 3] = new Square(PlayableType.nonPlayable);
+            grid[2, 4] = new Square(PlayableType.nonPlayable);
+            grid[3, 0] = new Square(PlayableType.nonPlayable);
+            grid[3, 4] = new Square(PlayableType.nonPlayable);
+            grid[4, 1] = new Square(PlayableType.nonPlayable);
+            grid[4, 3] = new Square(PlayableType.nonPlayable);
 
         }
 
@@ -233,32 +243,32 @@ namespace Felli
         private void SetPossibleMovements()
         {
             grid[0, 0].PossibleMovements
-                = new Direction[] { Direction.E, Direction.S };
-            grid[0, 1].PossibleMovements
-                = new Direction[] { Direction.S, Direction.E, Direction.W };
+                = new Direction[] { Direction.E, Direction.SE };
             grid[0, 2].PossibleMovements
-                = new Direction[] { Direction.W, Direction.S };
-            grid[1, 0].PossibleMovements
-                = new Direction[] { Direction.N, Direction.E, };
+                = new Direction[] { Direction.S, Direction.E, Direction.W };
+            grid[0, 4].PossibleMovements
+                = new Direction[] { Direction.W, Direction.SW };
             grid[1, 1].PossibleMovements
-                = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
+                = new Direction[] { Direction.NW, Direction.E, Direction.SE };
             grid[1, 2].PossibleMovements
-                = new Direction[] { Direction.N, Direction.W, Direction.SW };
-            grid[2, 1].PossibleMovements
+                = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
+            grid[1, 3].PossibleMovements
+                = new Direction[] { Direction.NE, Direction.W, Direction.SW };
+            grid[2, 2].PossibleMovements
                 = new Direction[] { Direction.NE, Direction.N, Direction.NW,
                     Direction.SW, Direction.S, Direction.SE };
-            grid[3, 0].PossibleMovements
-                = new Direction[] { Direction.NE, Direction.E, Direction.S };
             grid[3, 1].PossibleMovements
-                = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
+                = new Direction[] { Direction.NE, Direction.E, Direction.SW };
             grid[3, 2].PossibleMovements
-                = new Direction[] { Direction.NW, Direction.W, Direction.S };
+                = new Direction[] { Direction.N, Direction.S, Direction.E, Direction.W };
+            grid[3, 3].PossibleMovements
+                = new Direction[] { Direction.NW, Direction.W, Direction.SE };
             grid[4, 0].PossibleMovements
-                = new Direction[] { Direction.N, Direction.E };
-            grid[4, 1].PossibleMovements
-                = new Direction[] { Direction.W, Direction.E, Direction.N };
+                = new Direction[] { Direction.NE, Direction.E };
             grid[4, 2].PossibleMovements
-                = new Direction[] { Direction.W, Direction.N };
+                = new Direction[] { Direction.W, Direction.E, Direction.N };
+            grid[4, 4].PossibleMovements
+                = new Direction[] { Direction.W, Direction.NW };
         }
 
         private bool CheckWin()
@@ -290,8 +300,8 @@ namespace Felli
         private (bool, int, int, bool) CheckMovement(string input)
         {
             bool value = false;
-            int row = 0;
-            int column = 0;
+            int previousRow = 0;
+            int previousColumn = 0;
             int newRow = 0;
             int newColumn = 0;
             bool eraseEnemy = false;
@@ -305,8 +315,8 @@ namespace Felli
                 {
                     playingPiece.Move(dir);
                     Square targetSq = grid[playingPiece.Row, playingPiece.Column];
-                    row = playingPiece.PreviousRow;
-                    column = playingPiece.PreviousColumn;
+                    previousRow = playingPiece.PreviousRow;
+                    previousColumn = playingPiece.PreviousColumn;
                     newRow = playingPiece.Row;
                     newColumn = playingPiece.Column;
 
@@ -317,11 +327,7 @@ namespace Felli
                     }
                     else
                     {
-                        if (playingPiece.Color == targetSq.Piece.Color)
-                        {
-                            value = false;
-                        }
-                        else
+                        if (playingPiece.Color != targetSq.Piece.Color)
                         {
                             if (targetSq.HasDirection(dir))
                             {
@@ -333,30 +339,14 @@ namespace Felli
                                 if (grid[playingPiece.Row, playingPiece.Column].HasPiece()) value = false;
                                 else value = true;
                             }
-                            else
-                            {
-                                if (targetSq.HasSimilarDirection(dir))
-                                {
-                                    Direction d = targetSq.GetSimilarDirection(dir);
-                                    playingPiece.Move(d);
-                                    newRow = playingPiece.Row;
-                                    newColumn = playingPiece.Column;
-                                    eraseEnemy = true;
-
-                                    if (grid[playingPiece.Row, playingPiece.Column].HasPiece()) value = false;
-                                    else value = true;
-                                }
-                                else value = false;
-                            }
                         }
                     }
 
-                    playingPiece.Row = row;
-                    playingPiece.Column = column;
-                    playingPiece.PreviousRow = row;
-                    playingPiece.PreviousColumn = column;
+                    playingPiece.Row = previousRow;
+                    playingPiece.Column = previousColumn;
+                    playingPiece.PreviousRow = previousRow;
+                    playingPiece.PreviousColumn = previousColumn;
                 }
-                else value = false;
                 return (value, newRow, newColumn, eraseEnemy);
             }
         }
@@ -399,7 +389,7 @@ namespace Felli
             int previousRow = p.PreviousRow;
             int previousColumn = p.PreviousColumn;
             bool value = false;
-            
+
             p.Move(d);
 
             if (grid[p.Row, p.Column].HasPiece())
@@ -409,11 +399,6 @@ namespace Felli
                     if ((grid[p.Row, p.Column].HasDirection(d)))
                     {
                         p.Move(d);
-                        if (grid[p.Row, p.Column].HasPiece()) value = true;
-                    }
-                    else if ((grid[p.Row, p.Column].HasSimilarDirection(d)))
-                    {
-                        p.Move((grid[p.Row, p.Column].GetSimilarDirection(d)));
                         if (grid[p.Row, p.Column].HasPiece()) value = true;
                     }
                 }
