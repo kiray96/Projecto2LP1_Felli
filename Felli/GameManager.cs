@@ -98,10 +98,11 @@ namespace Felli
             string input = null;
             currentPlayer = p1;
 
+            UpdateBlockedPieces();
+
             //Infinite loop
             while (true)
             {
-                UpdateBlockedPieces();
 
                 while (playingPiece == null)
                 {
@@ -166,10 +167,9 @@ namespace Felli
                 grid[playingPiece.Row, playingPiece.Column].Piece = playingPiece;
                 grid[playingPiece.PreviousRow, playingPiece.PreviousColumn].Piece = null;
 
+                UpdateBlockedPieces();
 
-
-                //Fazer Check win
-
+                if (CheckWin()) break;
                 ChangeTurn();
                 input = null;
                 playingPiece = null;
@@ -275,21 +275,40 @@ namespace Felli
         {
             if (p1.Color == currentPlayer.Color)
             {
-                if (p1.PieceCount == 0)
-                {
-                    r.Player2Win();
-                    return true;
-                }
-            }
-            else
-            {
-                if (p2.PieceCount == 0)
+                if (p2.PieceCount == 0 || HasAllPiecesBlocked(p2.Color))
                 {
                     r.Player1Win();
                     return true;
                 }
             }
+            else
+            {
+                if (p1.PieceCount == 0 || HasAllPiecesBlocked(p1.Color))
+                {
+                    r.Player2Win();
+                    return true;
+                }
+            }
             return false;
+        }
+
+        private bool HasAllPiecesBlocked(PieceColor color)
+        {
+            bool value = false;
+
+            foreach (Square sq in grid)
+            {
+                if (sq.HasPiece())
+                {
+                    if (sq.Piece.IsBlocked) value = true;
+                    else
+                    {
+                        value = false;
+                        break;
+                    }
+                }
+            }
+            return value;
         }
 
         /// <summary>
