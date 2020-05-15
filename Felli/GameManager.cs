@@ -34,8 +34,7 @@ namespace Felli
             }
             SpawnEntities();
             SetPossibleMovements();
-            SetPlayers();
-
+            
         }
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace Felli
 
         }
 
-        private void SetPlayers()
+        public void SetPlayers()
         {
             string input = null;
 

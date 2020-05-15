@@ -12,8 +12,9 @@ namespace Felli
             //Create game variables
             Render r = new Render();
             GameManager gm = new GameManager(r);
+            r.MainMenu();
             r.Draw(gm.grid);
-            //r.MainMenu();
+            gm.SetPlayers();
             gm.GameLoop();
         }
     }
