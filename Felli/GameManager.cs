@@ -128,9 +128,9 @@ namespace Felli
                 input = null;
 
                 //A tuple with a boolean that decides if the piece moves and an integer with the quantity of steps it can move (row and col) and a bool for erase enemy.
-                (bool, int, int, bool) canMove = (false, 0, 0, false);
+                (bool, int, int, bool) movement = (false, 0, 0, false);
 
-                while (canMove.Item1 == false)
+                while (movement.Item1 == false)
                 {
                     while (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9")
                     {
@@ -140,9 +140,9 @@ namespace Felli
                         r.ShowPossibleDirections(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
                         input = Console.ReadLine();
 
-                        canMove = CheckMovement(input);
+                        movement = CheckMovement(input);
 
-                        if (!canMove.Item1)
+                        if (!movement.Item1)
                         {
                             r.InvalidMovementText();
                             input = null;
@@ -153,16 +153,16 @@ namespace Felli
 
                 }
 
-                if (canMove.Item4)
+                //If erasing enemy is set to true
+                if (movement.Item4)
                 {
                     playingPiece.Move((Direction)Convert.ToInt32(input));
                     grid[playingPiece.Row, playingPiece.Column].Piece = null;
                     playingPiece.ResetMovement();
                     UpdatePieces();
                 }
-                playingPiece.Row = canMove.Item2;
-                playingPiece.Column = canMove.Item3;
-                //If erasing enemy is set to true
+                playingPiece.Row = movement.Item2;
+                playingPiece.Column = movement.Item3;
 
                 grid[playingPiece.Row, playingPiece.Column].Piece = playingPiece;
                 grid[playingPiece.PreviousRow, playingPiece.PreviousColumn].Piece = null;
@@ -170,6 +170,7 @@ namespace Felli
                 UpdateBlockedPieces();
 
                 if (CheckWin()) break;
+
                 ChangeTurn();
                 input = null;
                 playingPiece = null;
@@ -300,11 +301,14 @@ namespace Felli
             {
                 if (sq.HasPiece())
                 {
-                    if (sq.Piece.IsBlocked) value = true;
-                    else
+                    if (sq.Piece.Color == color)
                     {
-                        value = false;
-                        break;
+                        if (sq.Piece.IsBlocked) value = true;
+                        else
+                        {
+                            value = false;
+                            break;
+                        }
                     }
                 }
             }

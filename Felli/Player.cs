@@ -19,6 +19,7 @@ namespace Felli
         {
             Color = color;
             Id = id;
+            PieceCount = 6;
         }
     }
 }
