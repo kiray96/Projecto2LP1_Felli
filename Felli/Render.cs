@@ -24,6 +24,7 @@ namespace Felli
             }
 
             DrawBoardLines();
+            DrawMovementGUI();
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Felli
             //Fifth Line
             WriteAt(@"-   |   -", 7, 12);
             WriteAt(@"-     |     -", 8, 10);
-            
+
             //Sixth Line
             WriteAt(@"-----", 9, 18);
             WriteAt(@"-----", 9, 10);
@@ -78,6 +79,20 @@ namespace Felli
             WriteAt(" ------------- ", 12, 1);
 
             Console.ForegroundColor = ConsoleColor.White;
+        }
+        private void DrawMovementGUI()
+        {
+
+            WriteAt("Select the desired direction with your numpad!", 2, 50);
+            WriteAt(@"  7(NW)   8(N)   9(NE)", 4, 60);
+            WriteAt(@"    \      |      /", 5, 60);
+            WriteAt(@"     \     |     /", 6, 60);
+            WriteAt(@"      \    |    /", 7, 60);
+            WriteAt(@"4(W)-------------- 6(E)", 8, 60);
+            WriteAt(@"      /    |    \", 9, 60);
+            WriteAt(@"     /     |     \", 10, 60);
+            WriteAt(@"    /      |      \", 11, 60);
+            WriteAt(@"  1(SW)   2(S)   3(SE)", 12, 60);
 
 
         }
@@ -173,25 +188,17 @@ namespace Felli
             Console.WriteLine();
         }
 
-        /// <summary>
-        /// Method that informs the players that Player 2 won 
-        /// </summary>
-        public void Player2Win()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine();
-            Console.WriteLine("Player 2 won.");
-            Console.WriteLine();
-        }
+
 
         /// <summary>
-        /// Method that informs the players that Player 1 won 
+        /// Method that informs the players which Player won 
         /// </summary>
-        public void Player1Win()
+        public void PlayerWin(Player p)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
-            Console.WriteLine("Player 1 won.");
+            if (p.Id == 1) Console.WriteLine("Player 1 won!");
+            else Console.WriteLine("Player 2 won!");
             Console.WriteLine();
         }
 
@@ -199,7 +206,7 @@ namespace Felli
         /// Method that shows the player the possible movements
         /// </summary>
         /// <param name="possibleMoves"></param>
-        public void ShowPossibleDirections(Direction[] possibleMoves)
+        public void ShowPossibleDirections(Direction[] possibleMoves, Piece p)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
@@ -210,27 +217,21 @@ namespace Felli
             }
             Console.WriteLine("\n________");
             Console.WriteLine();
+            Console.WriteLine($"Selected Piece: {p.Id}");
+            Console.WriteLine();
             Console.Write("Input: ");
         }
 
         public void ShowInputMovements()
         {
-            Console.WriteLine("");
-            Console.WriteLine(@"  7(NW)   8(N)   9(NE)");
-            Console.WriteLine(@"    \      |      /");
-            Console.WriteLine(@"     \     |     /");
-            Console.WriteLine(@"      \    |    /");
-            Console.WriteLine(@"4(W)-------------- 6(E)");
-            Console.WriteLine(@"      /    |    \");
-            Console.WriteLine(@"     /     |     \");
-            Console.WriteLine(@"    /      |      \");
-            Console.WriteLine(@"  1(SW)   2(S)   3(SE)");
-            Console.WriteLine();
             Console.WriteLine("Choose an available number to move in the respective direction!");
             Console.WriteLine();
             Console.WriteLine("________");
         }
 
+        public void MainMenu()
+        {
 
+        }
     }
 }

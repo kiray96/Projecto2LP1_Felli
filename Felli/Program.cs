@@ -13,6 +13,8 @@ namespace Felli
             Render r = new Render();
             GameManager gm = new GameManager(r);
             r.Draw(gm.grid);
+            //r.MainMenu();
+            gm.GameLoop();
         }
     }
 }

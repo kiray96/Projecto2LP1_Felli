@@ -10,7 +10,6 @@ namespace Felli
         /// Bidimensional object array that holds the game objects 
         /// </summary>
         public Square[,] grid = new Square[5, 5];
-
         private Render r;
         private Piece playingPiece;
         private Player p1, p2, currentPlayer;
@@ -36,7 +35,7 @@ namespace Felli
             SpawnEntities();
             SetPossibleMovements();
             SetPlayers();
-            GameLoop();
+
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace Felli
         /// <summary>
         /// Accepts user input and converts it into a game action
         /// </summary>
-        private void GameLoop()
+        public void GameLoop()
         {
             string input = null;
             currentPlayer = p1;
@@ -137,7 +136,7 @@ namespace Felli
                         Console.Clear();
                         r.Draw(grid);
                         r.ShowInputMovements();
-                        r.ShowPossibleDirections(grid[playingPiece.Row, playingPiece.Column].PossibleMovements);
+                        r.ShowPossibleDirections(grid[playingPiece.Row, playingPiece.Column].PossibleMovements, playingPiece);
                         input = Console.ReadLine();
 
                         movement = CheckMovement(input);
@@ -169,7 +168,13 @@ namespace Felli
 
                 UpdateBlockedPieces();
 
-                if (CheckWin()) break;
+                if (CheckWin())
+                {
+                    Console.Clear();
+                    r.Draw(grid);
+                    r.PlayerWin(currentPlayer);
+                    break;
+                }
 
                 ChangeTurn();
                 input = null;
@@ -278,7 +283,6 @@ namespace Felli
             {
                 if (p2.PieceCount == 0 || HasAllPiecesBlocked(p2.Color))
                 {
-                    r.Player1Win();
                     return true;
                 }
             }
@@ -286,7 +290,6 @@ namespace Felli
             {
                 if (p1.PieceCount == 0 || HasAllPiecesBlocked(p1.Color))
                 {
-                    r.Player2Win();
                     return true;
                 }
             }
