@@ -1,7 +1,8 @@
 ﻿
 namespace Felli
 {
-    
+    /// \file Direction.cs
+    /// File containing enum direction
     /// <summary>
     /// Enum Direction. Enumerates all possible directions.
     /// </summary>
