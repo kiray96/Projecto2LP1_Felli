@@ -68,6 +68,8 @@ se não existir nenhum vencedor o turno é trocado e o ciclo é repetido.
 
 ### Diagrama UML
 
+![](./img/UML.png)
+
 ## Referências
 
 * [The C# Player's Guide](http://starboundsoftware.com/books/c-sharp/CSharpPlayersGuide-Sample.pdf)
