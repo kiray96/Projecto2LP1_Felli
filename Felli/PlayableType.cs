@@ -2,7 +2,7 @@
 namespace Felli
 {
     /// <summary>
-    /// Enum Playeble types. Enumerate if its playable ou not
+    /// Enum Playable types 
     /// </summary>
     public enum PlayableType
     {

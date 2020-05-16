@@ -1,11 +1,10 @@
-﻿using System;
-
+﻿
 namespace Felli
 {
     /// <summary>
     /// Main Class
     /// </summary>
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {

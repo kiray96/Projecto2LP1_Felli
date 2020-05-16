@@ -23,7 +23,7 @@ namespace Felli
 
 
         /// <summary>
-        /// Check if is a playable Type
+        /// Construct the square object with the respective playable Type
         /// </summary>
         /// <param name="type"></param>
         public Square(PlayableType type)
@@ -57,53 +57,6 @@ namespace Felli
             foreach (Direction d in PossibleMovements)
             {
                 if (d == dir) return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Method that gets similar directions based on the given direction
-        /// </summary>
-        /// <returns></returns>
-        public Direction GetSimilarDirection(Direction dir)
-        {
-            string s = "";
-            Direction d = default;
-
-            if (dir.ToString().Contains("N")) s = "N";
-            else if (dir.ToString().Contains("S")) s = "S";
-
-
-
-            foreach (Direction direction in PossibleMovements)
-            {
-                if (direction.ToString().Contains(s))
-                {
-                    d = direction;
-                    break;
-                }
-            }
-
-            return d;
-        }
-
-        /// <summary>
-        /// Method that gives similar directions
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <returns></returns>
-        public bool HasSimilarDirection(Direction dir)
-        {
-            string s = "";
-
-            if (dir.ToString().Contains("N")) s = "N";
-            else if (dir.ToString().Contains("S")) s = "S";
-
-
-            foreach (Direction d in PossibleMovements)
-            {
-                if (d.ToString().Contains(s)) return true;
             }
 
             return false;

@@ -76,11 +76,15 @@ namespace Felli
                     break;
 
                 case Direction.E:
+                    //Since the board is 5x5, when we are at the edges we need 
+                    //to move two positions to skip the hidden positions 
                     if (Row == 0 || Row == 4) Column += 2;
                     else Column++;
                     break;
 
                 case Direction.W:
+                    //Since the board is 5x5, when we are at the edges we need 
+                    //to move two positions to skip the hidden positions
                     if (Row == 0 || Row == 4) Column -= 2;
                     else Column--;
                     break;
