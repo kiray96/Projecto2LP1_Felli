@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using System;
 
 namespace Felli
 {
+    /// <summary>
+    /// Render class
+    /// </summary>
     public class Render
     {
         /// <summary>
@@ -28,7 +30,7 @@ namespace Felli
         }
 
         /// <summary>
-        /// Class that sets cursor at a certain position and writes on it
+        /// Method that sets cursor at a certain position and writes on it
         /// </summary>
         /// <param name="s"></param>
         /// <param name="x"></param>
@@ -43,6 +45,10 @@ namespace Felli
             Console.SetCursorPosition(origCol, origRow);
 
         }
+
+        /// <summary>
+        /// Method that draw the board lines 
+        /// </summary>
         public void DrawBoardLines()
         {
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
@@ -80,6 +86,10 @@ namespace Felli
 
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        /// <summary>
+        /// Method that shows the numpad
+        /// </summary>
         private void DrawMovementGUI()
         {
 
@@ -180,6 +190,9 @@ namespace Felli
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Method that informs the moviment is invalid
+        /// </summary>
         public void InvalidMovementText()
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -222,6 +235,9 @@ namespace Felli
             Console.Write("Input: ");
         }
 
+        /// <summary>
+        /// Method that shows the phrase to the available number to move
+        /// </summary>
         public void ShowInputMovements()
         {
             Console.WriteLine("Choose an available number to move in the respective direction!");
@@ -229,6 +245,9 @@ namespace Felli
             Console.WriteLine("________");
         }
 
+        /// <summary>
+        /// Method that shows the rules 
+        /// </summary>
         public void MainMenu()
         {
             Console.WriteLine();
@@ -251,13 +270,10 @@ namespace Felli
             Console.WriteLine("   * The first player chooses which piece he wants to play first. " +
                 "\n     The pieces can be moved in the following ways: " +
                 "\n          *The player can move in all possible directions and then choose the direction on the numpad." +
-                "\n          *Thew can jump over an adjacent opponent's piece, eliminating that piece and landing at a free spot on the board." +
-                "\n     Only can move one piece per turn.");
-            Console.WriteLine("   * Afterwards, it's the second player's turn. " +
-                "\n     The player selects the piece (of the respective color) he wants to play. The pieces can be moved in the following ways:" +
-                "\n          *The second player can move in all possible directions and then choose the direction on the numpad." +
-                "\n          *Thew can jump over an adjacent opponent's piece, eliminating that piece and landing at a free spot on the board." +
-                "\n     Only can move one piece per turn.");
+                "\n          *The can jump over an adjacent opponent's piece, eliminating that piece and landing at a free spot on the board." +
+                "\n          *Only one piece can move per turn.");
+            Console.WriteLine("   * Afterwards, it's the second player's turn, following the same rules.");
+            Console.WriteLine();
             Console.WriteLine(" Objectives:");
             Console.WriteLine("   * The game ends when a player has captured or immobilized all of the opponent's pieces.");
             Console.WriteLine();

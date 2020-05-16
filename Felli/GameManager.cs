@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Felli
 {
+    /// <summary>
+    /// Game Manager class
+    /// </summary>
     public class GameManager
     {
         /// <summary>
@@ -74,10 +75,14 @@ namespace Felli
 
         }
 
+        /// <summary>
+        /// Set the first player acording to the players input
+        /// </summary>
         public void SetPlayers()
         {
             string input = null;
 
+            //Converts the player's correct input to uppercase
             while (input != "W" && input != "B")
             {
                 Console.Clear();
@@ -114,8 +119,10 @@ namespace Felli
                         input = Console.ReadLine();
                     }
 
+                    //To start with the chosen piece
                     playingPiece = SelectPlayingPiece(input);
 
+                    //If the playing pice is not valid 
                     if (playingPiece == null)
                     {
                         r.InvalidPieceText();
@@ -128,8 +135,10 @@ namespace Felli
                 //A tuple with a boolean that decides if the piece moves and an integer with the quantity of steps it can move (row and col) and a bool for erase enemy.
                 (bool, int, int, bool) movement = (false, 0, 0, false);
 
+
                 while (movement.Item1 == false)
                 {
+                    //While the input is different from the possible moves
                     while (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9")
                     {
                         Console.Clear();
@@ -140,6 +149,7 @@ namespace Felli
 
                         movement = CheckMovement(input);
 
+                        //if the piece movement is set to false show the invalid movement text
                         if (!movement.Item1)
                         {
                             r.InvalidMovementText();
@@ -154,6 +164,7 @@ namespace Felli
                 //If erasing enemy is set to true
                 if (movement.Item4)
                 {
+                    //
                     playingPiece.Move((Direction)Convert.ToInt32(input));
                     grid[playingPiece.Row, playingPiece.Column].Piece = null;
                     playingPiece.ResetMovement();
@@ -182,15 +193,21 @@ namespace Felli
             }
         }
 
+        /// <summary>
+        /// To create a player to play
+        /// </summary>
+        /// <param name="s"></param>
         private void CreatePlayers(string s)
         {
             switch (s)
             {
+                //if the first player choses the white pieces
                 case "W":
                     p1 = new Player(PieceColor.white, 1);
                     p2 = new Player(PieceColor.black, 2);
                     break;
 
+                //if the first player choses the black pieces
                 case "B":
                     p1 = new Player(PieceColor.black, 1);
                     p2 = new Player(PieceColor.white, 2);
@@ -199,34 +216,28 @@ namespace Felli
 
         }
 
+        /// <summary>
+        /// Method to change the turn
+        /// </summary>
         private void ChangeTurn()
         {
             if (currentPlayer == p1)
             {
+                //it's the second player's turn
                 currentPlayer = p2;
             }
             else
             {
+                //it's the first player's turn
                 currentPlayer = p1;
             }
         }
-
-
-        private void SelectPlayer(string s)
-        {
-            switch (s)
-            {
-                case "W":
-                    p1 = new Player(PieceColor.white, 1);
-                    p2 = new Player(PieceColor.black, 2);
-                    break;
-                case "B":
-                    p1 = new Player(PieceColor.black, 1);
-                    p2 = new Player(PieceColor.white, 2);
-                    break;
-            }
-        }
-
+       
+        /// <summary>
+        /// To select the piece to play
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private Piece SelectPlayingPiece(string input)
         {
             Piece p = null;
@@ -235,7 +246,7 @@ namespace Felli
             {
                 if (go.Piece != null)
                 {
-                    //Definir a peça 
+                    //Define the piece 
                     if (go.Piece.Id == Convert.ToInt32(input) && go.Piece.Color == currentPlayer.Color && go.Piece.IsBlocked == false)
                     {
                         p = go.Piece;
@@ -245,6 +256,9 @@ namespace Felli
             return p;
         }
 
+        /// <summary>
+        /// Set the possible movements in each position 
+        /// </summary>
         private void SetPossibleMovements()
         {
             grid[0, 0].PossibleMovements
@@ -276,17 +290,23 @@ namespace Felli
                 = new Direction[] { Direction.W, Direction.NW };
         }
 
+        /// <summary>
+        /// Black and White pieces victory condition verification
+        /// </summary>
+        /// <returns></returns>
         private bool CheckWin()
-        {
+        {            
             if (p1.Color == currentPlayer.Color)
             {
+                //in case player two runs out of pieces or has them all blocked
                 if (p2.PieceCount == 0 || HasAllPiecesBlocked(p2.Color))
                 {
                     return true;
                 }
-            }
+            }            
             else
             {
+                //in case player one runs out of pieces or has them all blocked
                 if (p1.PieceCount == 0 || HasAllPiecesBlocked(p1.Color))
                 {
                     return true;
@@ -295,10 +315,17 @@ namespace Felli
             return false;
         }
 
+
+        /// <summary>
+        /// Check if the player have all pieces blocked 
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         private bool HasAllPiecesBlocked(PieceColor color)
         {
             bool value = false;
 
+            //for each position in the grid check if all the pieces are blocked
             foreach (Square sq in grid)
             {
                 if (sq.HasPiece())
@@ -331,11 +358,14 @@ namespace Felli
             int newColumn = 0;
             bool eraseEnemy = false;
 
+            ////While the input is different from the possible moves
             if (input != "1" && input != "2" && input != "3" && input != "4" && input != "6" && input != "7" && input != "8" && input != "9") return (false, 0, 0, false);
             else
             {
+                //Convert input to Int and pass it as a direction  
                 Direction dir = (Direction)Convert.ToInt32(input);
 
+                //if the position where the player wants to go is free
                 if (grid[playingPiece.Row, playingPiece.Column].HasDirection(dir))
                 {
                     playingPiece.Move(dir);
@@ -375,13 +405,18 @@ namespace Felli
                 return (value, newRow, newColumn, eraseEnemy);
             }
         }
+
+        /// <summary>
+        /// Update to ckeck if is any blocked piece
+        /// </summary>
         private void UpdateBlockedPieces()
         {
+            //Cycle through the board
             for (int i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    //Se existe uma peça, verifica se está bloqueada
+                    //If a pice exists, check if it is blocked
                     if (grid[i, j].Piece != null)
                     {
                         grid[i, j].Piece.IsBlocked = CheckPieceBlock(grid[i, j], grid[i, j].Piece);
@@ -390,10 +425,16 @@ namespace Felli
             }
         }
 
+        /// <summary>
+        /// To check if the piece is blocked
+        /// </summary>
+        /// <param name="sq"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
         private bool CheckPieceBlock(Square sq, Piece p)
         {
             bool value = false;
-
+            //for each possible movement check if the square is blocked
             foreach (Direction d in sq.PossibleMovements)
             {
                 value = CheckBlockedPositions(p, d);
@@ -401,12 +442,22 @@ namespace Felli
             }
             return value;
         }
+
+        /// <summary>
+        /// To update the remain pieces
+        /// </summary>
         private void UpdatePieces()
         {
             if (currentPlayer == p1) p2.PieceCount--;
             else p1.PieceCount--;
         }
 
+        /// <summary>
+        /// Verification of blocked positions within the board
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
         private bool CheckBlockedPositions(Piece p, Direction d)
         {
             int row = p.Row;
@@ -417,10 +468,13 @@ namespace Felli
 
             p.Move(d);
 
+            //if the position has a piece
             if (grid[p.Row, p.Column].HasPiece())
             {
+                //
                 if (grid[p.Row, p.Column].Piece.Color != p.Color)
                 {
+                    //if the direction is possible
                     if ((grid[p.Row, p.Column].HasDirection(d)))
                     {
                         p.Move(d);

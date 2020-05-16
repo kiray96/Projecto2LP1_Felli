@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Felli
 {
+    /// <summary>
+    /// Piece class
+    /// </summary>
     public class Piece
     {
         /// <summary>

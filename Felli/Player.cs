@@ -1,9 +1,9 @@
 ﻿
-
-using System.Dynamic;
-
 namespace Felli
 {
+    /// <summary>
+    /// Player's class 
+    /// </summary>
     public class Player
     {
         public PieceColor Color { get; private set; }
@@ -13,8 +13,16 @@ namespace Felli
         /// </summary>
         public int Id { get; private set; }
 
+        /// <summary>
+        /// Piece Count
+        /// </summary>
         public int PieceCount { get; set; }
 
+        /// <summary>
+        /// Create player values
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="id"></param>
         public Player(PieceColor color, int id)
         {
             Color = color;
